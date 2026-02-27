@@ -41,8 +41,8 @@ body {
   overflow: visible;
 }
 
-/* Hearts layer */
-.hearts-layer {
+/* Emoji layer */
+.emoji-layer {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -259,7 +259,7 @@ input:focus {
 }
 
 /* Floating emoji inside the card */
-.card-heart {
+.floating-emoji {
   position: absolute;
   pointer-events: auto;
   cursor: pointer;
@@ -269,8 +269,8 @@ input:focus {
   animation-delay: var(--delay, 0s);
 }
 
-/* Emoji flying toward the name after being clicked */
-.card-heart.flying {
+/* Emoji flying toward the image after being clicked */
+.floating-emoji.flying {
   animation: none;
   position: fixed;
   z-index: 100;

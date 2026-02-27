@@ -1,6 +1,6 @@
 const formSection = document.querySelector(".form-section");
 const containerEl = document.querySelector(".container");
-const heartsLayer = document.getElementById("heartsLayer");
+const emojiLayer = document.getElementById("emojiLayer");
 const resultEl = document.getElementById("result");
 const resultName = document.getElementById("resultName");
 const errorEl = document.getElementById("error");
@@ -14,10 +14,14 @@ const elementPills = document.querySelectorAll('#elementPills .pill');
 const resultImg = document.getElementById("resultImg");
 const btnMain = document.getElementById("btnMain");
 const btnRetry = document.getElementById("btnRetry");
-const brainrotEmojis = ["💀", "🧠", "🗣️", "🔥", "💯", "😭", "⚡", "🤯"];
+const floatingEmojis = [
+  "💀", "🧠", "🗣️", "🔥", "💯", "😭", "⚡", "🤯",
+  "🚽", "🗿", "👺", "🦍", "🐊", "💅", "🤡", "👁️",
+  "🫠", "🥶", "🤖", "👽", "🎃", "🫡", "🐸", "🦧",
+];
 
-let heartsRunning = false;
-let heartsTimer = null;
+let emojisRunning = false;
+let emojisTimer = null;
 
 function setupPillGroup(pills, hiddenInput) {
   pills.forEach((pill) => {
@@ -139,13 +143,13 @@ function discover() {
   shuffleNames(brainrotTerms, chosenName, 1500, () => {
     showBrainrotImage(chosenName);
     resultName.classList.add("revealing");
-    burstHearts();
+    burstEmojis();
 
     resultName.addEventListener(
       "animationend",
       () => {
         resultName.classList.remove("revealing");
-        startHearts();
+        startEmojis();
       },
       { once: true },
     );
@@ -153,7 +157,7 @@ function discover() {
 }
 
 function resetForm() {
-  stopHearts();
+  stopEmojis();
   resultEl.classList.remove("visible");
   resultName.classList.remove("revealing", "shuffling");
   resultImg.classList.remove("visible", "bump");
@@ -167,8 +171,8 @@ function resetForm() {
   energyPills.forEach((p) => p.classList.remove("active"));
   elementPills.forEach((p) => p.classList.remove("active"));
 
-  heartsLayer.innerHTML = "";
-  document.querySelectorAll(".card-heart.flying").forEach((h) => h.remove());
+  emojiLayer.innerHTML = "";
+  document.querySelectorAll(".floating-emoji.flying").forEach((e) => e.remove());
 
   setTimeout(() => {
     formSection.classList.remove("hidden");
@@ -181,75 +185,79 @@ function getContainerCenter() {
   return { cx: cw / 2, cy: ch / 2, maxDim: Math.max(cw, ch) };
 }
 
-function burstHearts() {
+function burstEmojis() {
   const { cx, cy, maxDim } = getContainerCenter();
 
   for (let i = 0; i < 30; i++) {
     const angle = (Math.PI * 2 * i) / 30 + (Math.random() - 0.5) * 0.4;
     const dist = maxDim * 0.6 + Math.random() * maxDim * 0.5;
-    createHeart(cx, cy, angle, dist, Math.random() * 0.3, 2 + Math.random() * 1.5);
+    createFloatingEmoji(cx, cy, angle, dist, Math.random() * 0.3, 2 + Math.random() * 1.5);
   }
 }
 
-function startHearts() {
-  if (heartsRunning) return;
-  heartsRunning = true;
-  heartsLoop();
+function startEmojis() {
+  if (emojisRunning) return;
+  emojisRunning = true;
+  emojisLoop();
 }
 
-function stopHearts() {
-  heartsRunning = false;
-  clearTimeout(heartsTimer);
+function stopEmojis() {
+  emojisRunning = false;
+  clearTimeout(emojisTimer);
 }
 
-function heartsLoop() {
-  if (!heartsRunning) return;
-  spawnHeart();
-  heartsTimer = setTimeout(heartsLoop, 400 + Math.random() * 800);
+function emojisLoop() {
+  if (!emojisRunning) return;
+  spawnEmoji();
+  emojisTimer = setTimeout(emojisLoop, 200 + Math.random() * 400);
 }
 
-function spawnHeart() {
+function spawnEmoji() {
   const { cx, cy, maxDim } = getContainerCenter();
   const angle = Math.random() * Math.PI * 2;
   const dist = maxDim * 0.7 + Math.random() * maxDim * 0.5;
 
-  createHeart(cx, cy, angle, dist, 0, 6 + Math.random() * 6);
+  createFloatingEmoji(cx, cy, angle, dist, 0, 6 + Math.random() * 6);
 }
 
-function createHeart(cx, cy, angle, dist, delay, duration) {
-  const heart = document.createElement("div");
-  heart.className = "card-heart";
-  heart.textContent =
-    brainrotEmojis[Math.floor(Math.random() * brainrotEmojis.length)];
-  heart.style.left = `${cx}px`;
-  heart.style.top = `${cy}px`;
-  heart.style.fontSize = `${1.2 + Math.random() * 1.8}rem`;
-  heart.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
-  heart.style.setProperty("--dy", `${Math.sin(angle) * dist}px`);
-  heart.style.setProperty("--delay", `${delay}s`);
-  heart.style.setProperty("--duration", `${duration}s`);
+function randomEmoji() {
+  if (Math.random() < 0.1) return "6️⃣7️⃣";
+  return floatingEmojis[Math.floor(Math.random() * floatingEmojis.length)];
+}
 
-  heart.addEventListener("click", () => {
+function createFloatingEmoji(cx, cy, angle, dist, delay, duration) {
+  const emoji = document.createElement("div");
+  emoji.className = "floating-emoji";
+  emoji.textContent = randomEmoji();
+  emoji.style.left = `${cx}px`;
+  emoji.style.top = `${cy}px`;
+  emoji.style.fontSize = `${1.2 + Math.random() * 1.8}rem`;
+  emoji.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
+  emoji.style.setProperty("--dy", `${Math.sin(angle) * dist}px`);
+  emoji.style.setProperty("--delay", `${delay}s`);
+  emoji.style.setProperty("--duration", `${duration}s`);
+
+  emoji.addEventListener("click", () => {
     if (!resultEl.classList.contains("visible")) return;
 
-    const heartRect = heart.getBoundingClientRect();
+    const emojiRect = emoji.getBoundingClientRect();
     const imgRect = resultImg.getBoundingClientRect();
     const targetX = imgRect.left + imgRect.width / 2;
     const targetY = imgRect.top + imgRect.height / 2;
 
-    heart.style.left = `${heartRect.left + heartRect.width / 2}px`;
-    heart.style.top = `${heartRect.top + heartRect.height / 2}px`;
-    heart.style.opacity = "1";
-    heart.style.transform = "translate(-50%, -50%)";
-    heart.classList.add("flying");
-    document.body.appendChild(heart);
+    emoji.style.left = `${emojiRect.left + emojiRect.width / 2}px`;
+    emoji.style.top = `${emojiRect.top + emojiRect.height / 2}px`;
+    emoji.style.opacity = "1";
+    emoji.style.transform = "translate(-50%, -50%)";
+    emoji.classList.add("flying");
+    document.body.appendChild(emoji);
 
     // Force reflow so the transition starts from the current position
-    void heart.offsetWidth;
-    heart.style.left = `${targetX}px`;
-    heart.style.top = `${targetY}px`;
-    heart.style.transform = "translate(-50%, -50%) scale(0)";
-    heart.style.opacity = "0";
+    void emoji.offsetWidth;
+    emoji.style.left = `${targetX}px`;
+    emoji.style.top = `${targetY}px`;
+    emoji.style.transform = "translate(-50%, -50%) scale(0)";
+    emoji.style.opacity = "0";
 
     setTimeout(() => {
       resultImg.classList.remove("bump");
@@ -257,13 +265,13 @@ function createHeart(cx, cy, angle, dist, delay, duration) {
       resultImg.classList.add("bump");
     }, 250);
 
-    setTimeout(() => heart.remove(), 450);
+    setTimeout(() => emoji.remove(), 450);
   });
 
-  heartsLayer.appendChild(heart);
+  emojiLayer.appendChild(emoji);
 
   const total = (delay + duration) * 1000;
   setTimeout(() => {
-    if (heart.parentNode) heart.remove();
+    if (emoji.parentNode) emoji.remove();
   }, total + 500);
 }
