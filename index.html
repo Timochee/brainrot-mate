@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quel est ton brainrot ?</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="hearts-layer" id="heartsLayer"></div>
+      <div class="wrapper">
+        <div class="form-section">
+          <h1>Trouve ton brainrot 🧠💀</h1>
+
+          <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" id="prenom" placeholder="Ton prénom" />
+          </div>
+
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" placeholder="Ton nom de famille" />
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date de naissance</label>
+            <input type="date" id="dob" />
+          </div>
+
+          <div class="form-group">
+            <label>Ta plateforme favorite</label>
+            <div class="pills" id="platformPills">
+              <button
+                type="button"
+                class="pill"
+                data-group="platform"
+                data-value="tiktok"
+              >
+                🎵 TikTok
+              </button>
+              <button
+                type="button"
+                class="pill"
+                data-group="platform"
+                data-value="youtube"
+              >
+                ▶️ YouTube
+              </button>
+              <button
+                type="button"
+                class="pill"
+                data-group="platform"
+                data-value="twitter"
+              >
+                𝕏 Twitter
+              </button>
+              <button
+                type="button"
+                class="pill"
+                data-group="platform"
+                data-value="instagram"
+              >
+                📸 Instagram
+              </button>
+            </div>
+            <input type="hidden" id="platform" />
+          </div>
+
+          <div class="form-group">
+            <label>Ton niveau de screen time</label>
+            <div class="pills" id="screenTimePills">
+              <button
+                type="button"
+                class="pill"
+                data-group="screentime"
+                data-value="casual"
+              >
+                😎 Casual
+              </button>
+              <button
+                type="button"
+                class="pill"
+                data-group="screentime"
+                data-value="addict"
+              >
+                📱 Addict
+              </button>
+              <button
+                type="button"
+                class="pill"
+                data-group="screentime"
+                data-value="nolife"
+              >
+                💀 No-life
+              </button>
+              <button
+                type="button"
+                class="pill"
+                data-group="screentime"
+                data-value="herbe"
+              >
+                🌿 Touche l'herbe
+              </button>
+            </div>
+            <input type="hidden" id="screentime" />
+          </div>
+
+          <p class="error" id="error">
+            Dis-nous en un peu plus sur toi avant de révéler ton brainrot 🧠
+          </p>
+
+          <button class="btn-main" id="btnMain">Révéler 🧠</button>
+        </div>
+
+        <div class="result" id="result">
+          <p class="result-intro" id="resultIntro">Ton brainrot est...</p>
+          <img class="result-img" id="resultImg" alt="" />
+          <p class="result-name" id="resultName"></p>
+          <button class="btn-retry" id="btnRetry">Recommencer</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="brainrots.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
