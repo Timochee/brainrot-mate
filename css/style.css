@@ -250,9 +250,6 @@ input:focus {
   transition: border-color 0.2s, color 0.2s;
   position: relative;
   z-index: 2;
-}
-
-.btn-retry {
   pointer-events: auto;
 }
 

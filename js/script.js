@@ -32,6 +32,8 @@ function setupPillGroup(pills, hiddenInput) {
 setupPillGroup(energyPills, energyInput);
 setupPillGroup(elementPills, elementInput);
 
+dobInput.max = new Date().toISOString().split("T")[0];
+
 btnMain.addEventListener("click", discover);
 btnRetry.addEventListener("click", resetForm);
 
@@ -112,6 +114,16 @@ function discover() {
   errorEl.classList.remove("visible");
 
   if (!firstName || !lastName || !dob || !energy || !element) {
+    errorEl.textContent = "Dis-nous en un peu plus sur toi avant de révéler ton brainrot 🧠";
+    errorEl.classList.add("visible");
+    return;
+  }
+
+  const dobDate = new Date(dob + "T00:00:00");
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  if (dobDate > now || dobDate.getFullYear() < 1900) {
+    errorEl.textContent = "Cette date de naissance n'a pas l'air très réaliste 🤔";
     errorEl.classList.add("visible");
     return;
   }
@@ -120,8 +132,6 @@ function discover() {
   const inputHash = hashString(seed);
 
   const chosenName = brainrotTerms[inputHash % brainrotTerms.length];
-
-  resultName.textContent = brainrotTerms[Math.floor(Math.random() * brainrotTerms.length)];
 
   formSection.classList.add("hidden");
   resultEl.classList.add("visible");
