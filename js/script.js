@@ -53,7 +53,7 @@ function hashString(str) {
 function showBrainrotImage(name) {
   const file = brainrotImageMap[name];
   if (!file) return;
-  resultImg.src = "images/" + file;
+  resultImg.src = "assets/images/" + file;
   resultImg.alt = name;
   resultImg.classList.remove("visible");
   resultImg.onload = () => resultImg.classList.add("visible");
