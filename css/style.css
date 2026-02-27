@@ -54,12 +54,14 @@ body {
   position: relative;
   z-index: 1;
   max-height: 100%;
+  pointer-events: none;
 }
 
 .form-section {
   opacity: 1;
   transform: rotateY(0deg);
   transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: auto;
 }
 
 .form-section.hidden {
@@ -177,7 +179,7 @@ input:focus {
 
 .result.visible {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: none;
   position: relative;
   transform: rotateY(0deg);
   user-select: none;
@@ -250,6 +252,10 @@ input:focus {
   z-index: 2;
 }
 
+.btn-retry {
+  pointer-events: auto;
+}
+
 .btn-retry:hover {
   border-color: #00d4ff;
   color: #0a3247;
@@ -260,6 +266,7 @@ input:focus {
   position: absolute;
   pointer-events: auto;
   cursor: pointer;
+  user-select: none;
   opacity: 0;
   animation: drift var(--duration) ease-in-out forwards;
   animation-delay: var(--delay, 0s);

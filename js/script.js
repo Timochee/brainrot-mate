@@ -79,7 +79,12 @@ function shuffleNames(pool, finalName, duration, callback) {
   const shortPool = pool.filter((p) => p.length <= maxLen);
   const shufflePool = shortPool.length >= 5 ? shortPool : pool;
 
+  const longest = shufflePool.reduce((a, b) => a.length > b.length ? a : b);
   resultName.style.fontSize = "";
+  resultName.textContent = longest;
+  const defaultHeight = resultName.offsetHeight;
+  fitNameSize();
+  resultName.style.minHeight = defaultHeight + "px";
   resultName.classList.add("shuffling");
 
   const timer = setInterval(() => {
@@ -88,6 +93,7 @@ function shuffleNames(pool, finalName, duration, callback) {
     if (step >= steps) {
       clearInterval(timer);
       resultName.classList.remove("shuffling");
+      resultName.style.minHeight = "";
       resultName.textContent = finalName;
       resultName.style.fontSize = "";
       fitNameSize();
