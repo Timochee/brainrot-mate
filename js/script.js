@@ -36,7 +36,8 @@ function setupPillGroup(pills, hiddenInput) {
 setupPillGroup(energyPills, energyInput);
 setupPillGroup(elementPills, elementInput);
 
-dobInput.max = new Date().toISOString().split("T")[0];
+const today = new Date();
+dobInput.max = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
 btnMain.addEventListener("click", discover);
 btnRetry.addEventListener("click", resetForm);

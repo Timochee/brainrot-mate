@@ -54,14 +54,12 @@ body {
   position: relative;
   z-index: 1;
   max-height: 100%;
-  pointer-events: none;
 }
 
 .form-section {
   opacity: 1;
   transform: rotateY(0deg);
   transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: auto;
 }
 
 .form-section.hidden {
@@ -102,6 +100,7 @@ input {
   transition: border-color 0.3s;
   outline: none;
   background: #fafafa;
+  pointer-events: auto;
 }
 
 input:focus {
