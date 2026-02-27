@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-"Brainrot Finder" — a single-page vanilla JS web app where users enter their name, surname, date of birth, favorite platform, and screen time level to get a deterministic brainrot term/meme match. No build system, no dependencies.
+"Brainrot Finder" — a single-page vanilla JS web app where users enter their name, surname, date of birth, energy type (Goblin/Rizz/Slay/Skibidi), and element (Feu/Eau/Terre/Air) to get a deterministic brainrot term/meme match. No build system, no dependencies.
 
 ## Development
 
@@ -28,7 +28,7 @@ Open `index.html` directly in a browser. No build step, no package manager, no s
 
 ## Architecture
 
-- **index.html** — Page structure: form section (inputs + two pill groups) and result section (term reveal + retry). Loads `js/brainrots.js` before `js/script.js`.
+- **index.html** — Page structure: form section (inputs + two pill groups: energy & element) and result section (image + term reveal + retry). Loads `js/brainrots.js` before `js/script.js`.
 - **js/brainrots.js** — Brainrot term data: flat `brainrotTerms` array and `brainrotImageMap` object mapping term names to image filenames (mixed `.webp` and `.png`). Data-only, no logic.
 - **js/script.js** — All app logic: hash-based term matching, form validation, shuffle/reveal animations, floating emoji system. Uses `setupPillGroup()` for pill groups and `getContainerCenter()` for heart animations.
 - **css/style.css** — Fully responsive layout using `clamp()` with `dvh`/`vw` units. Includes animated gradient background (blue), 3D flip transitions, dark mode via `prefers-color-scheme`, emoji animations, and `user-select: none` on the result view.

@@ -7,10 +7,10 @@ const errorEl = document.getElementById("error");
 const firstNameInput = document.getElementById("prenom");
 const lastNameInput = document.getElementById("nom");
 const dobInput = document.getElementById("dob");
-const platformInput = document.getElementById("platform");
-const screenTimeInput = document.getElementById("screentime");
-const platformPills = document.querySelectorAll('#platformPills .pill');
-const screenTimePills = document.querySelectorAll('#screenTimePills .pill');
+const energyInput = document.getElementById("energy");
+const elementInput = document.getElementById("element");
+const energyPills = document.querySelectorAll('#energyPills .pill');
+const elementPills = document.querySelectorAll('#elementPills .pill');
 const resultImg = document.getElementById("resultImg");
 const btnMain = document.getElementById("btnMain");
 const btnRetry = document.getElementById("btnRetry");
@@ -29,8 +29,8 @@ function setupPillGroup(pills, hiddenInput) {
   });
 }
 
-setupPillGroup(platformPills, platformInput);
-setupPillGroup(screenTimePills, screenTimeInput);
+setupPillGroup(energyPills, energyInput);
+setupPillGroup(elementPills, elementInput);
 
 btnMain.addEventListener("click", discover);
 btnRetry.addEventListener("click", resetForm);
@@ -100,17 +100,17 @@ function discover() {
   const firstName = firstNameInput.value.trim();
   const lastName = lastNameInput.value.trim();
   const dob = dobInput.value;
-  const platform = platformInput.value;
-  const screenTime = screenTimeInput.value;
+  const energy = energyInput.value;
+  const element = elementInput.value;
 
   errorEl.classList.remove("visible");
 
-  if (!firstName || !lastName || !dob || !platform || !screenTime) {
+  if (!firstName || !lastName || !dob || !energy || !element) {
     errorEl.classList.add("visible");
     return;
   }
 
-  const seed = (firstName + lastName + dob + platform + screenTime).toLowerCase();
+  const seed = (firstName + lastName + dob + energy + element).toLowerCase();
   const inputHash = hashString(seed);
 
   const chosenName = brainrotTerms[inputHash % brainrotTerms.length];
@@ -146,10 +146,10 @@ function resetForm() {
   firstNameInput.value = "";
   lastNameInput.value = "";
   dobInput.value = "";
-  platformInput.value = "";
-  screenTimeInput.value = "";
-  platformPills.forEach((p) => p.classList.remove("active"));
-  screenTimePills.forEach((p) => p.classList.remove("active"));
+  energyInput.value = "";
+  elementInput.value = "";
+  energyPills.forEach((p) => p.classList.remove("active"));
+  elementPills.forEach((p) => p.classList.remove("active"));
 
   heartsLayer.innerHTML = "";
   document.querySelectorAll(".card-heart.flying").forEach((h) => h.remove());
