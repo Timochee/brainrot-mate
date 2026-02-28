@@ -14,6 +14,7 @@ const elementPills = document.querySelectorAll('#elementPills .pill');
 const resultImg = document.getElementById("resultImg");
 const btnMain = document.getElementById("btnMain");
 const btnRetry = document.getElementById("btnRetry");
+const btnShare = document.getElementById("btnShare");
 const floatingEmojis = [
   "💀", "🧠", "🗣️", "🔥", "💯", "😭", "⚡", "🤯",
   "🚽", "🗿", "👺", "🦍", "🐊", "💅", "🤡", "👁️",
@@ -23,11 +24,23 @@ const floatingEmojis = [
 let emojisRunning = false;
 let emojisTimer = null;
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(() => {});
+}
+
+function resetPillGroup(pills) {
+  pills.forEach((p) => {
+    p.classList.remove("active");
+    p.setAttribute("aria-pressed", "false");
+  });
+}
+
 function setupPillGroup(pills, hiddenInput) {
   pills.forEach((pill) => {
     pill.addEventListener("click", () => {
-      pills.forEach((p) => p.classList.remove("active"));
+      resetPillGroup(pills);
       pill.classList.add("active");
+      pill.setAttribute("aria-pressed", "true");
       hiddenInput.value = pill.dataset.value;
     });
   });
@@ -41,6 +54,7 @@ dobInput.max = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2
 
 btnMain.addEventListener("click", discover);
 btnRetry.addEventListener("click", resetForm);
+btnShare.addEventListener("click", shareResult);
 
 document.querySelectorAll("input").forEach((el) => {
   el.addEventListener("keydown", (e) => {
@@ -151,6 +165,7 @@ function discover() {
       () => {
         resultName.classList.remove("revealing");
         startEmojis();
+        btnRetry.focus();
       },
       { once: true },
     );
@@ -169,14 +184,15 @@ function resetForm() {
   dobInput.value = "";
   energyInput.value = "";
   elementInput.value = "";
-  energyPills.forEach((p) => p.classList.remove("active"));
-  elementPills.forEach((p) => p.classList.remove("active"));
+  resetPillGroup(energyPills);
+  resetPillGroup(elementPills);
 
   emojiLayer.innerHTML = "";
   document.querySelectorAll(".floating-emoji.flying").forEach((e) => e.remove());
 
   setTimeout(() => {
     formSection.classList.remove("hidden");
+    firstNameInput.focus();
   }, 100);
 }
 
@@ -275,4 +291,25 @@ function createFloatingEmoji(cx, cy, angle, dist, delay, duration) {
   setTimeout(() => {
     if (emoji.parentNode) emoji.remove();
   }, total + 500);
+}
+
+function shareResult() {
+  const name = resultName.textContent;
+  const text = `Mon brainrot est ${name} ! 🧠💀\nDécouvre le tien :`;
+  const url = window.location.href;
+
+  const resetShareBtn = () => setTimeout(() => {
+    btnShare.textContent = "Partager 🔗";
+    btnShare.classList.remove("copied");
+  }, 2000);
+
+  if (navigator.share) {
+    navigator.share({ title: "Mon brainrot", text, url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+      btnShare.textContent = "Copié ✓";
+      btnShare.classList.add("copied");
+      resetShareBtn();
+    }).catch(() => {});
+  }
 }

@@ -14,13 +14,15 @@ Open `index.html` directly in a browser. No build step, no package manager, no s
 
 ```
 ├── index.html              # Entry point
+├── manifest.json           # PWA manifest (app name, icons, theme)
+├── sw.js                   # Service worker (offline cache)
 ├── css/
 │   └── style.css           # All styles
 ├── js/
 │   ├── brainrots.js        # Data: brainrotTerms array + brainrotImageMap object
 │   └── script.js           # All app logic
 ├── assets/
-│   ├── favicon.png         # Favicon
+│   ├── favicon.png         # Favicon & PWA icon
 │   ├── image_map.json      # Reference copy (not used at runtime)
 │   └── images/             # Brainrot images (lowercase, hyphens, mixed .webp/.png)
 └── CLAUDE.md
@@ -30,10 +32,12 @@ Open `index.html` directly in a browser. No build step, no package manager, no s
 
 - **index.html** — Page structure: form section (inputs + two pill groups: energy & element) and result section (image + term reveal + retry). Loads `js/brainrots.js` before `js/script.js`.
 - **js/brainrots.js** — Brainrot term data: flat `brainrotTerms` array and `brainrotImageMap` object mapping term names to image filenames (mixed `.webp` and `.png`). Data-only, no logic.
-- **js/script.js** — All app logic: hash-based term matching, form validation, shuffle/reveal animations, floating emoji system. Uses `setupPillGroup()` for pill groups and `getContainerCenter()` for heart animations.
-- **css/style.css** — Fully responsive layout using `clamp()` with `dvh`/`vw` units. Includes animated gradient background (blue), 3D flip transitions, dark mode via `prefers-color-scheme`, emoji animations, and `user-select: none` on the result view.
+- **js/script.js** — All app logic: hash-based term matching, form validation, shuffle/reveal animations, floating emoji system, share (Web Share API + clipboard fallback), SW registration. Uses `setupPillGroup()` for pill groups and `getContainerCenter()` for emoji animations.
+- **css/style.css** — Fully responsive layout using `clamp()` with `dvh`/`vw` units. Includes animated gradient background (blue), 3D flip transitions, staggered form entrance animations, dark mode via `prefers-color-scheme`, emoji animations, and `user-select: none` on the result view.
 - **assets/images/** — Brainrot term images, all lowercase filenames with hyphens (e.g. `bombardiro-crocodilo.webp`). Mixed `.webp` and `.png` formats.
 - **assets/image_map.json** — Reference copy of the term-to-image mapping (not used at runtime, `brainrotImageMap` in `js/brainrots.js` is the source of truth).
+- **manifest.json** — PWA manifest: declares the app name, icons, theme color, and `display: standalone` so the app can be installed on mobile home screens.
+- **sw.js** — Service worker: caches all assets at install, serves cache-first with background revalidation on fetch. Must stay at root (its scope covers the directory it lives in). Enables offline support.
 
 ## Key patterns
 

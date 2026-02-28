@@ -75,12 +75,22 @@ h1 {
   font-size: clamp(1.1rem, 4vw, 1.9rem);
   color: #2d2d2d;
   margin-bottom: clamp(8px, 2dvh, 28px);
+  opacity: 0;
+  animation: slideUp 0.5s ease forwards;
 }
 
 .form-group {
   margin-bottom: clamp(6px, 1.5dvh, 18px);
   text-align: left;
+  opacity: 0;
+  animation: slideUp 0.4s ease forwards;
 }
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.15s; }
+.form-group:nth-child(3) { animation-delay: 0.2s; }
+.form-group:nth-child(4) { animation-delay: 0.25s; }
+.form-group:nth-child(5) { animation-delay: 0.3s; }
 
 label {
   display: block;
@@ -152,6 +162,8 @@ input:focus {
   cursor: pointer;
   margin-top: clamp(4px, 1dvh, 10px);
   transition: transform 0.2s, box-shadow 0.2s;
+  opacity: 0;
+  animation: slideUp 0.4s ease 0.35s forwards;
 }
 
 .btn-main:hover {
@@ -233,28 +245,57 @@ input:focus {
   animation: bump 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.btn-retry {
+.result-actions {
+  display: flex;
+  gap: clamp(8px, 2vw, 16px);
+  justify-content: center;
   margin-top: clamp(12px, 3dvh, 32px);
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.result.visible .result-actions {
+  pointer-events: auto;
+}
+
+.btn-retry,
+.btn-share {
   padding: clamp(6px, 1dvh, 10px) clamp(16px, 4vw, 28px);
-  background: none;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
-  color: #888;
   font-size: clamp(0.8rem, 2vw, 0.9rem);
   font-family: inherit;
   font-weight: 500;
   cursor: pointer;
   opacity: 0;
   animation: fadeIn 0.5s ease 1.3s forwards;
-  transition: border-color 0.2s, color 0.2s;
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.btn-retry {
+  background: none;
+  color: #888;
 }
 
 .btn-retry:hover {
   border-color: #00d4ff;
   color: #0a3247;
+}
+
+.btn-share {
+  background: linear-gradient(135deg, #00d4ff, #0a3247);
+  border-color: transparent;
+  color: white;
+}
+
+.btn-share:hover {
+  filter: brightness(1.15);
+}
+
+.btn-share.copied {
+  background: #22c55e;
+  border-color: transparent;
 }
 
 /* Floating emoji inside the card */
@@ -326,6 +367,11 @@ input:focus {
 }
 
 @keyframes fadeIn { to { opacity: 1; } }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 @keyframes bump {
   0%, 100% { transform: scale(1); }
