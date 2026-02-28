@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 "Brainrot Finder" — a single-page vanilla JS web app where users enter their name, surname, date of birth, energy type (Goblin/Rizz/Slay/Skibidi), and element (Feu/Eau/Terre/Air) to get a deterministic brainrot term/meme match. No build system, no dependencies.
 
+This project shares a config-driven engine (`js/engine.js`, `css/style.css`, `index.html`) with the sibling project `/Users/timoremy/GithubProjects/ame-soeur`. These three files must stay **identical** between the two projects.
+
 ## Development
 
 Open `index.html` directly in a browser. No build step, no package manager, no server required.
@@ -13,14 +15,15 @@ Open `index.html` directly in a browser. No build step, no package manager, no s
 ## File structure
 
 ```
-├── index.html              # Entry point
+├── index.html              # SHARED shell (identical across projects)
+├── config.js               # SPECIFIC: theme, texts, pills, callbacks, features
+├── data.js                 # SPECIFIC: brainrot terms + image map (APP_DATA)
 ├── manifest.json           # PWA manifest (app name, icons, theme)
 ├── sw.js                   # Service worker (offline cache)
 ├── css/
-│   └── style.css           # All styles
+│   └── style.css           # SHARED styles (CSS custom properties, identical)
 ├── js/
-│   ├── brainrots.js        # Data: brainrotTerms array + brainrotImageMap object
-│   └── script.js           # All app logic
+│   └── engine.js           # SHARED logic (identical across projects)
 ├── assets/
 │   ├── favicon.png         # Favicon & PWA icon
 │   ├── image_map.json      # Reference copy (not used at runtime)
@@ -30,19 +33,21 @@ Open `index.html` directly in a browser. No build step, no package manager, no s
 
 ## Architecture
 
-- **index.html** — Page structure: form section (inputs + two pill groups: energy & element) and result section (image + term reveal + retry). Loads `js/brainrots.js` before `js/script.js`.
-- **js/brainrots.js** — Brainrot term data: flat `brainrotTerms` array and `brainrotImageMap` object mapping term names to image filenames (mixed `.webp` and `.png`). Data-only, no logic.
-- **js/script.js** — All app logic: hash-based term matching, form validation, shuffle/reveal animations, floating emoji system, share (Web Share API + clipboard fallback), SW registration. Uses `setupPillGroup()` for pill groups and `getContainerCenter()` for emoji animations.
-- **css/style.css** — Fully responsive layout using `clamp()` with `dvh`/`vw` units. Includes animated gradient background (blue), 3D flip transitions, staggered form entrance animations, dark mode via `prefers-color-scheme`, emoji animations, and `user-select: none` on the result view.
-- **assets/images/** — Brainrot term images, all lowercase filenames with hyphens (e.g. `bombardiro-crocodilo.webp`). Mixed `.webp` and `.png` formats.
-- **assets/image_map.json** — Reference copy of the term-to-image mapping (not used at runtime, `brainrotImageMap` in `js/brainrots.js` is the source of truth).
-- **manifest.json** — PWA manifest: declares the app name, icons, theme color, and `display: standalone` so the app can be installed on mobile home screens.
-- **sw.js** — Service worker: caches all assets at install, serves cache-first with background revalidation on fetch. Must stay at root (its scope covers the directory it lives in). Enables offline support.
+- **index.html** — Shared static shell: 3 fixed inputs (prénom, nom, dob), a `#pillGroupsContainer` div for dynamic pill groups, result section with image + name + actions. Loads `config.js` → `data.js` → `js/engine.js`.
+- **config.js** — Project-specific `APP_CONFIG` object defining: theme colors (CSS custom properties), UI texts, pill groups, emoji config, result display options, seed/pool/result callbacks, and feature flags (PWA, analytics, date validation, stagger animations).
+- **data.js** — Project-specific `APP_DATA` object containing the data (terms array + imageMap object for brainrot).
+- **js/engine.js** — Shared IIFE that reads `APP_CONFIG` + `APP_DATA`: applies theme via CSS custom properties, builds pill groups from config, populates UI text, runs discover logic using config callbacks (`getSeed`, `getPool`, `getResult`), manages the floating emoji system, conditional share button, PWA registration, and analytics injection.
+- **css/style.css** — Shared responsive layout using `clamp()` with `dvh`/`vw` units. All colors use `var(--xxx)` CSS custom properties set by engine.js at runtime. Includes animated gradient, 3D flip, stagger animations (opt-in via `.stagger` class), dark mode via `prefers-color-scheme`, emoji drift/flying animations.
+- **manifest.json** — PWA manifest: declares the app name, icons, theme color, and `display: standalone`.
+- **sw.js** — Service worker: caches all assets at install, serves cache-first with background revalidation.
 
 ## Key patterns
 
-- **All sizing uses `clamp()` with `dvh` for vertical and `vw` for horizontal** — no fixed breakpoints except for extreme small screens. The container must never exceed viewport height.
+- **Config-driven architecture** — All project-specific behavior lives in `config.js`. The engine and styles are 100% shared.
+- **All colors are CSS custom properties** — set by `applyTheme()` in engine.js from `APP_CONFIG.theme`. Never hardcode colors in style.css.
+- **All sizing uses `clamp()` with `dvh` for vertical and `vw` for horizontal** — no fixed breakpoints. The container must never exceed viewport height.
 - **Emojis overflow the container intentionally** (`overflow: visible`) so they can float across the full page.
-- **Image lookup uses `brainrotImageMap`** — not slugified filenames. To add a new term, add it to both `brainrotTerms` and `brainrotImageMap` in `js/brainrots.js`, and place the image in `assets/images/`.
+- **Image lookup uses `APP_DATA.imageMap`** — not slugified filenames. To add a new term, add it to both `terms` and `imageMap` in `data.js`, and place the image in `assets/images/`.
 - **Code and variable names are in English**, UI text is in French.
-- **No inline event handlers** — all events use `addEventListener` in script.js.
+- **No inline event handlers** — all events use `addEventListener` in engine.js.
+- **When modifying shared files** (`index.html`, `js/engine.js`, `css/style.css`), always copy them to the sibling project afterwards and verify both still work.

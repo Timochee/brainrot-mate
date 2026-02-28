@@ -1,10 +1,11 @@
-const CACHE_NAME = "brainrot-v1";
+const CACHE_NAME = "brainrot-v2";
 const ASSETS = [
   "./",
   "./index.html",
+  "./config.js",
+  "./data.js",
   "./css/style.css",
-  "./js/brainrots.js",
-  "./js/script.js",
+  "./js/engine.js",
   "./assets/favicon.png",
   "./manifest.json",
 ];

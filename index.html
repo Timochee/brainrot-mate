@@ -3,15 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quel est ton brainrot ?</title>
-    <meta name="description" content="Découvre quel brainrot te correspond ! Entre ton nom, ta date de naissance et ton énergie pour révéler ton meme." />
-    <meta property="og:title" content="Quel est ton brainrot ?" />
-    <meta property="og:description" content="Découvre quel brainrot te correspond ! Entre ton nom, ta date de naissance et ton énergie pour révéler ton meme." />
+    <title></title>
+    <meta name="description" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="assets/favicon.png" />
-    <meta name="theme-color" content="#0a3247" />
-    <link rel="icon" type="image/png" href="assets/favicon.png" />
-    <link rel="manifest" href="manifest.json" />
+    <meta property="og:image" content="" />
+    <meta name="theme-color" content="" />
+    <link rel="icon" href="" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,8 +23,8 @@
     <main class="container">
       <div class="emoji-layer" id="emojiLayer" aria-hidden="true"></div>
       <div class="wrapper">
-        <div class="form-section" role="form" aria-label="Formulaire brainrot">
-          <h1>Trouve ton brainrot 🧠💀</h1>
+        <div class="form-section" role="form" aria-label="Formulaire">
+          <h1></h1>
 
           <div class="form-group">
             <label for="prenom">Prénom</label>
@@ -42,66 +41,26 @@
             <input type="date" id="dob" min="1900-01-01" />
           </div>
 
-          <div class="form-group">
-            <label>Ton énergie</label>
-            <div class="pills" id="energyPills" role="group" aria-label="Choix d'énergie">
-              <button type="button" class="pill" data-value="goblin" aria-pressed="false">
-                👺 Goblin
-              </button>
-              <button type="button" class="pill" data-value="rizz" aria-pressed="false">
-                😏 Rizz
-              </button>
-              <button type="button" class="pill" data-value="slay" aria-pressed="false">
-                💅 Slay
-              </button>
-              <button type="button" class="pill" data-value="skibidi" aria-pressed="false">
-                🚽 Skibidi
-              </button>
-            </div>
-            <input type="hidden" id="energy" />
-          </div>
+          <div id="pillGroupsContainer"></div>
 
-          <div class="form-group">
-            <label>Ton élément</label>
-            <div class="pills" id="elementPills" role="group" aria-label="Choix d'élément">
-              <button type="button" class="pill" data-value="feu" aria-pressed="false">
-                🔥 Feu
-              </button>
-              <button type="button" class="pill" data-value="eau" aria-pressed="false">
-                🌊 Eau
-              </button>
-              <button type="button" class="pill" data-value="terre" aria-pressed="false">
-                🌍 Terre
-              </button>
-              <button type="button" class="pill" data-value="air" aria-pressed="false">
-                💨 Air
-              </button>
-            </div>
-            <input type="hidden" id="element" />
-          </div>
+          <p class="error" id="error" role="alert" aria-live="assertive"></p>
 
-          <p class="error" id="error" role="alert" aria-live="assertive">
-            Dis-nous en un peu plus sur toi avant de révéler ton brainrot 🧠
-          </p>
-
-          <button class="btn-main" id="btnMain">Révéler 🧠</button>
+          <button class="btn-main" id="btnMain"></button>
         </div>
 
         <div class="result" id="result" aria-live="polite">
-          <p class="result-intro" id="resultIntro">Ton brainrot est...</p>
+          <p class="result-intro" id="resultIntro"></p>
           <img class="result-img" id="resultImg" alt="" />
           <p class="result-name" id="resultName"></p>
-          <div class="result-actions">
-            <button class="btn-retry" id="btnRetry">Recommencer</button>
-            <button class="btn-share" id="btnShare">Partager 🔗</button>
+          <div class="result-actions" id="resultActions">
+            <button class="btn-retry" id="btnRetry"></button>
           </div>
         </div>
       </div>
     </main>
 
-    <script src="js/brainrots.js"></script>
-    <script src="js/script.js"></script>
-    <script data-goatcounter="https://timochee.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+    <script src="config.js"></script>
+    <script src="data.js"></script>
+    <script src="js/engine.js"></script>
   </body>
 </html>
